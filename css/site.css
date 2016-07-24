@@ -133,9 +133,14 @@ x-page > header {
   background: #fff;
 }
 
+x-page > section {
+  z-index: 0;
+}
+
 x-page > header h1,
 x-page > header h2,
 x-page > header h3 {
+  display: inline-block;
   margin: 0;
 }
 
@@ -439,8 +444,33 @@ x-appbar > button {
 
 /* Community View */
 
+#community_tabs,
+#community_tabs > x-tabbox {
+  height: 100%;
+}
 
-/* CHAT INTEGRATION */
+#community_tabs > * {
+  max-width: none;
+}
+
+#community_tabs > *:last-child {
+  margin: 0;
+}
+
+#community_tabs x-tabbox > ul {
+  position: relative;
+}
+
+/* Chat Window */
+
+#chat_frame {
+  display: block;
+  position: absolute;
+  height: calc(100% + 65px);
+  width: 100%;
+  margin: -65px auto 0;
+  border: none;
+}
 
 
 /* DIAGRAM */
@@ -564,7 +594,7 @@ x-appbar > button {
 
 @media all and (min-width: 641px) {
   x-page > header svg:first-child {
-    margin: 0 0.1em 0 0.6em;
+    margin: -0.3em 0.1em 0 0;
   }
 
   #global_menu {

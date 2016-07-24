@@ -97,6 +97,7 @@
 
 <x-page id="system">
   <header class="shadow-mid" unselectable>
+    <svg><use xlink:href="#flow"></use></svg>
     <h2>The System</h2>
   </header>
 
@@ -118,6 +119,7 @@
 
 <x-page id="code">
   <header class="shadow-mid" unselectable>
+    <svg><use xlink:href="#brackets"></use></svg>
     <h2>Code</h2>
   </header>
 
@@ -130,14 +132,30 @@
 </x-page>
 
 <x-page id="community">
+
   <header class="shadow-mid" unselectable>
+    <svg><use xlink:href="#people"></use></svg>
     <h2>Community</h2>
   </header>
 
-  <section>
-
-    <div></div>
-
+  <section id="community_tabs">
+    <x-tabbox transition selected-index="0">
+      <menu>
+        <button>Chat</button>
+        <button>???</button>
+      </menu>
+      <ul>
+        <li>
+          <iframe id="chat_frame" src="https://gitter.im/blockchain-identity/blockchain-identity.github.io/~chat"></iframe>
+        </li>
+        <li>
+          <div class="coming-soon">
+            <svg><use xlink:href="#tools"></use></svg>
+            <h2>Coming Soon</h2>
+          </div>
+        </li>
+      </ul>
+    </x-tabbox>
   </section>
 
 </x-page>

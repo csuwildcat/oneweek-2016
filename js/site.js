@@ -169,17 +169,22 @@ function switchPage(view){
     }
   });
 
+  function loadGithubContent(){
+    fetch()
+  }
+
   window.addEventListener('hashchange', function(){
+    console.log(location.hash);
     switch(location.hash) {
-      case 'system-names'
+      case '#system-names':
+      //  fetch('')
+      break;
+
+      case '#system-users':
 
       break;
 
-      case 'system-users'
-
-      break;
-
-      case 'system-containers'
+      case '#system-containers':
 
       break;
     }
