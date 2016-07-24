@@ -1,0 +1,26 @@
+{
+  "name": "x-tag-cube",
+  "description": "",
+  "version": "0.1.4",
+  "keywords": [
+    "web-components",
+    "x-tag"
+  ],
+  "main": [
+    "src/main.js",
+    "src/main.css"
+  ],
+  "dependencies": {
+    "x-tag-core": "*"
+  },
+  "homepage": "https://github.com/x-tag/cube",
+  "_release": "0.1.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.4",
+    "commit": "3c09e9541223116664794c4b859bff34a6ee5bf8"
+  },
+  "_source": "https://github.com/x-tag/cube.git",
+  "_target": "*",
+  "_originalSource": "x-tag-cube"
+}

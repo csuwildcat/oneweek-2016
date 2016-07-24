@@ -1,33 +1,4 @@
 
-/* X-CLOCK DEMO FOR FRONT PAGE */
-
-xtag.register('x-clock', {
-  lifecycle: {
-    created: function(){
-      this.start();
-    }
-  },
-  methods: {
-    start: function(){
-      this.update();
-      this.xtag.interval = setInterval(this.update.bind(this), 1000);
-    },
-    stop: function(){
-      this.xtag.interval = clearInterval(this.xtag.interval);
-    },
-    update: function(){
-      this.textContent = new Date().toLocaleTimeString();
-    }
-  },
-  events: {
-    tap: function(){
-      if (this.xtag.interval) this.stop();
-      else this.start();
-    }
-  }
-});
-
-
 (function(){
 
   var lastState;
@@ -144,18 +115,17 @@ xtag.register('x-clock', {
 
 })();
 
+function switchPage(view){
+  document.getElementById(view).show(true);
+  xtag.query(document, 'x-action[data-view]').forEach(function(action){
+    if (action.getAttribute('data-view') == view) action.setAttribute('selected', '');
+    else action.removeAttribute('selected');
+  });
+}
+
 (function(){
 
-  var viewDeck = document.getElementById('views');
   var globalMenu = document.getElementById('global_menu');
-
-  function switchPage(view){
-    viewDeck.showCard('[data-view="' + view + '"]', 'forward');
-    xtag.query(document, 'x-action[data-view]').forEach(function(action){
-      if (action.getAttribute('data-view') == view) action.setAttribute('selected', '');
-      else action.removeAttribute('selected');
-    });
-  }
 
   xtag.history.addPaths({
     '/overview': {
@@ -163,14 +133,14 @@ xtag.register('x-clock', {
         switchPage('overview');
       }
     },
-    '/docs': {
+    '/system': {
       action: function(){
-        switchPage('docs');
+        switchPage('system');
       }
     },
-    '/builds': {
+    '/code': {
       action: function(){
-        switchPage('builds');
+        switchPage('code');
       }
     },
     '/community':  {
@@ -189,5 +159,30 @@ xtag.register('x-clock', {
       }, true);
     }
   });
+
+  var diagram = document.getElementById('diagram');
+  var systemView = document.getElementById('system');
+  xtag.addEvents(diagram, {
+    'tap:delegate([diagram-group])': function(){
+      var group = this.getAttribute('diagram-group');
+      diagram.setAttribute('diagram-highlight', group);
+    }
+  });
+
+  window.addEventListener('hashchange', function(){
+    switch(location.hash) {
+      case 'system-names'
+
+      break;
+
+      case 'system-users'
+
+      break;
+
+      case 'system-containers'
+
+      break;
+    }
+  }, false);
 
 })();

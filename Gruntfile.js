@@ -46,7 +46,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-smush-components');
   grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('build', ['jshint','smush-components']);
+  grunt.registerTask('build', ['smush-components']);
   grunt.registerTask('bump:patch', ['bumpup:patch', 'tagrelease']);
   grunt.registerTask('push', ['exec:update_master','exec:update_gh_pages']);
   grunt.registerTask('bump-push', ['bump:patch','push']);

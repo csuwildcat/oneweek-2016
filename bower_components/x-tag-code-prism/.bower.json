@@ -23,7 +23,7 @@
     "tag": "0.2.7",
     "commit": "fffcc346a9855fb0c2a3e22811a4a54d1295aa97"
   },
-  "_source": "git://github.com/x-tag/code-prism.git",
+  "_source": "https://github.com/x-tag/code-prism.git",
   "_target": "*",
   "_originalSource": "x-tag-code-prism"
 }

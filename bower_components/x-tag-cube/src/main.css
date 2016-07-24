@@ -1,0 +1,65 @@
+x-cube {
+  display: block;
+  position: relative;
+  font-size: 1em;
+  width: 1em;
+  height: 1em;
+  background: rgba(0,0,0,0.1);
+  -webkit-transform-origin: 0;
+  transform-origin: 0;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+x-cube .x-cube-face {
+  position: absolute;
+  top: 0;
+  width: inherit;
+  height: inherit;
+  background: inherit;
+  box-sizing: border-box;
+  border: 2px solid black;
+}
+
+x-cube .x-cube-front {
+  position: relative;
+  -webkit-transform: translateZ(0em);
+  transform: translateZ(0em);
+}
+
+x-cube .x-cube-back {
+  -webkit-transform: translateZ(0em);
+  transform: translateZ(0em);
+}
+
+x-cube .x-cube-left {
+  -webkit-transform-origin: left;
+  transform-origin: left;
+  -webkit-transform: rotateY(-90deg);
+  transform: rotateY(-90deg);
+}
+
+x-cube .x-cube-right {
+  right: 0;
+  -webkit-transform-origin: right;
+  transform-origin: right;
+  -webkit-transform: rotateY(90deg);
+  transform: rotateY(90deg);
+}
+
+x-cube .x-cube-top {
+  -webkit-transform-origin: top;
+  transform-origin: top;
+  -webkit-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+}
+
+x-cube .x-cube-bottom {
+  top: auto;
+  bottom: 0;
+  -webkit-transform-origin: bottom;
+  transform-origin: bottom;
+  -webkit-transform: rotateX(-90deg);
+  transform: rotateX(-90deg);
+}

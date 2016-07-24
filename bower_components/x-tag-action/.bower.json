@@ -21,7 +21,7 @@
     "tag": "0.0.11",
     "commit": "5411f1889ac88d5ee10674d88d3b123f88058da7"
   },
-  "_source": "git://github.com/x-tag/action.git",
+  "_source": "https://github.com/x-tag/action.git",
   "_target": "*",
   "_originalSource": "x-tag-action"
 }

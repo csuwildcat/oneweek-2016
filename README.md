@@ -1,2 +1,2 @@
-# x-tag.github.io
-The X-Tag website
+# blockchain-identity.github.io
+The project site for the Open Blockchain Identity project
