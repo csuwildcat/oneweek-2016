@@ -77,7 +77,7 @@
   </defs>
 </svg>
 
-<x-page id="overview" active selected>
+<x-page page="overview" active selected>
   <header class="shadow-mid" unselectable>
     <h2>Open Blockchain Identity</h2>
   </header>
@@ -86,7 +86,7 @@
 
     <h1>
       Join us in building an
-      <span>Open Source</span>, <span>Self-Sovereign</span>, <span>Decentralized</span>
+      <span>Open Source</span>, <span>Self-Sovereign</span>, <span>Decentralized</span>,
       <b>Identity Ecosystem</b>
       for people, apps, services, and devices.
     </h1>
@@ -95,7 +95,7 @@
 
 </x-page>
 
-<x-page id="system">
+<x-page page="system">
   <header class="shadow-mid" unselectable>
     <svg><use xlink:href="#flow"></use></svg>
     <h2>The System</h2>
@@ -109,15 +109,17 @@
       <a href="#system-containers" flat-button>Identity Containers</a>
     </menu>
 
-    <x-markdown id="system_names_markdown"></x-markdown>
-    <x-markdown id="system_users_markdown"></x-markdown>
-    <x-markdown id="system_containers_markdown"></x-markdown>
+    <div id="system_content">
+      <x-markdown id="system_names_markdown"></x-markdown>
+      <x-markdown id="system_users_markdown"></x-markdown>
+      <x-markdown id="system_containers_markdown"></x-markdown>
+    </div>
 
   </section>
 
 </x-page>
 
-<x-page id="code">
+<x-page page="code">
   <header class="shadow-mid" unselectable>
     <svg><use xlink:href="#brackets"></use></svg>
     <h2>Code</h2>
@@ -131,7 +133,7 @@
 
 </x-page>
 
-<x-page id="community">
+<x-page page="community">
 
   <header class="shadow-mid" unselectable>
     <svg><use xlink:href="#people"></use></svg>
@@ -164,7 +166,7 @@
 <div id="diagram">
   <div class="diagram-cubes">
 
-    <div id="diagram_blockchain" diagram-group="naming">
+    <div id="diagram_blockchain" diagram-group="names">
       <x-cube translate="0,0,2em"></x-cube>
       <x-cube translate="0,0,2em"></x-cube>
       <x-cube translate="0,0,2em"></x-cube>
@@ -172,21 +174,21 @@
       <x-cube translate="0,0,2em"></x-cube>
     </div>
 
-    <x-cube diagram-group="naming" width="3em" height="0.2em" depth="0.2em" translate="0,0,2.4em"></x-cube>
+    <x-cube diagram-group="names" width="3em" height="0.2em" depth="0.2em" translate="0,0,2.4em"></x-cube>
 
-    <x-cube id="diagram_name_server" diagram-group="naming" width="1em" height="5em" depth="5em"></x-cube>
+    <x-cube id="diagram_name_server" diagram-group="names" width="1em" height="5em" depth="5em"></x-cube>
 
-    <x-cube id="diagram_user_connection" diagram-group="user" width="3em" height="0.2em" depth="0.2em" translate="0,0,2.4em"></x-cube>
+    <x-cube id="diagram_user_connection" diagram-group="users" width="3em" height="0.2em" depth="0.2em" translate="0,0,2.4em"></x-cube>
 
-    <x-cube id="diagram_user" diagram-group="user" width="3em" height="3em" depth="3em" translate="0,0,1em"></x-cube>
+    <x-cube id="diagram_user" diagram-group="users" width="3em" height="3em" depth="3em" translate="0,0,1em"></x-cube>
 
-    <x-cube diagram-group="user" width="3em" height="0.2em" depth="0.2em" translate="0,0,2.4em"></x-cube>
+    <x-cube diagram-group="users" width="3em" height="0.2em" depth="0.2em" translate="0,0,2.4em"></x-cube>
 
-    <x-cube id="diagram_container" diagram-group="container" width="4em" height="4em" depth="4em" translate="0,0,0.5em">
-      <x-cube id="diagram_container_acl" diagram-group="container" width="0.25em" height="3.5em" depth="3.25em" translate="0.375em,0,0.375em">
-      <x-cube id="diagram_container_storage" diagram-group="container" width="1.75em" height="2em" depth="1.75em" translate="1.5em,0,0em"></x-cube>
-      <x-cube id="diagram_container_bot" diagram-group="container" width="0.75em" height="0.75em" depth="0.75em" translate="2.5em,0,2.5em"></x-cube>
-      <x-cube id="diagram_container_bot" diagram-group="container" width="0.75em" height="0.75em" depth="0.75em" translate="1.5em,0,2.5em"></x-cube>
+    <x-cube id="diagram_container" diagram-group="containers" width="4em" height="4em" depth="4em" translate="0,0,0.5em">
+      <x-cube id="diagram_container_acl" diagram-group="containers" width="0.25em" height="3.5em" depth="3.25em" translate="0.375em,0,0.375em">
+      <x-cube id="diagram_container_storage" diagram-group="containers" width="1.75em" height="2em" depth="1.75em" translate="1.5em,0,0em"></x-cube>
+      <x-cube id="diagram_container_bot" diagram-group="containers" width="0.75em" height="0.75em" depth="0.75em" translate="2.5em,0,2.5em"></x-cube>
+      <x-cube id="diagram_container_bot" diagram-group="containers" width="0.75em" height="0.75em" depth="0.75em" translate="1.5em,0,2.5em"></x-cube>
     </x-cube>
   </div>
 </div>
@@ -197,19 +199,19 @@
     <img src="images/logo-48.png" />
   </div>
   <menu>
-    <x-action selected event="viewchange" data-view="overview">
+    <x-action selected event="pagechange" data-page="overview">
       <svg><use xlink:href="#network"></use></svg>
       <span>Overview</span>
     </x-action>
-    <x-action event="viewchange" data-view="system">
+    <x-action event="pagechange" data-page="system">
       <svg><use xlink:href="#flow"></use></svg>
       <span>The System</span>
     </x-action>
-    <x-action event="viewchange" data-view="code">
+    <x-action event="pagechange" data-page="code">
       <svg><use xlink:href="#brackets"></use></svg>
       <span>Code</span>
     </x-action>
-    <x-action event="viewchange" data-view="community">
+    <x-action event="pagechange" data-page="community">
       <svg><use xlink:href="#people"></use></svg>
       <span>Community</span>
     </x-action>

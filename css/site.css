@@ -162,7 +162,7 @@ x-code-prism {
 [flat-button] {
   display: inline-block;
   font-size: 0.9rem;
-  padding: 0.25em 0.6em 0.2em;
+  padding: 0.35em 0.65em 0.25em;
   background: #fff;
   border: 1px solid;
   border-color: #ddd #ccc #bbb;
@@ -351,49 +351,64 @@ x-appbar > button {
 
 /* Overview View */
 
-#overview[selected] ~ #diagram {
+[page="overview"][selected] ~ #diagram {
   opacity: 1;
-  z-index: 2;
 }
 
-#overview section {
+[page="overview"] section {
   top: 22em;
   padding: 1.5em;
 }
 
-#overview section > * {
+[page="overview"] section > * {
   max-width: 600px;
   margin: 0 auto;
 }
 
-#overview h1 {
+[page="overview"] h1 {
   font-size: 1.5em;
   text-align: center;
 }
 
-#overview h1 span {
+[page="overview"] h1 span {
   color: #E14658;
 }
 
-#overview h1 b {
+[page="overview"] h1 b {
   color: #4e3075;
 }
 
 /* System View */
 
-#system[selected] ~ #diagram {
+[page="system"][selected] ~ #diagram {
   opacity: 1;
-  z-index: 2;
   -webkit-transform: scale(1);
   transform: scale(1);
 }
 
-#system section {
-  top: 24em;
+ [page="system"][selected][content] ~ #diagram {
+   -webkit-transform: scale(1.25);
+   transform: scale(1.25);
+ }
+
+ [page="system"][selected][content="names"] ~ #diagram .diagram-cubes {
+   transform: rotateX(-160deg) rotateY(25deg) translateX(6.25em) translateY(1em);
+ }
+
+ [page="system"][selected][content="users"] ~ #diagram .diagram-cubes {
+   transform: rotateX(-160deg) rotateY(25deg) translateX(-3.25em) translateY(0.5em);
+ }
+
+ [page="system"][selected][content="containers"] ~ #diagram .diagram-cubes {
+   transform: rotateX(-160deg) rotateY(25deg) translateX(-11.5em) translateY(0.5em);
+ }
+
+[page="system"] > section {
+  top: 23.5em;
   padding: 1.5em;
 }
 
-#system section > * {
+[page="system"] > section > * {
   max-width: 600px;
   margin: 0 auto;
 }
@@ -402,40 +417,45 @@ x-appbar > button {
   margin: 0 0.5em;
 }
 
-#system x-markdown {
-  height: 0;
+#system_content {
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+  margin-top: 2em;
+}
+
+[page="system"] x-markdown {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   opacity: 0;
   overflow: hidden;
+  background: #fff;
+  z-index: 0;
   -webkit-transform: translateY(8em);
   transform: translateY(8em);
   -webkit-transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-#system x-markdown[selected][loaded] {
+[page="system"][content="names"] #system_names_markdown[loaded],
+[page="system"][content="users"] #system_users_markdown[loaded],
+[page="system"][content="containers"] #system_containers_markdown[loaded] {
   height: auto;
   opacity: 1;
+  z-index: 0;
   -webkit-transform: none;
   transform: none;
 }
 
-
-#system[selected] ~ #diagram[diagram-highlight] > .scene > *  {
-  opacity: 0.25;
+[page="system"][content] ~ #diagram [diagram-group] {
+  opacity: 0;
 }
-
-#system[selected] ~ #diagram[diagram-highlight="blockchains"] > .scene > [diagram-highlights~="blockchains"],
-#system[selected] ~ #diagram[diagram-highlight="naming"] > .scene > [diagram-highlights~="naming"],
-#system[selected] ~ #diagram[diagram-highlight="data"] > .scene > [diagram-highlights~="data"] {
-  opacity: 1 !important;
-}
-
-#system[selected] ~ #diagram[diagram-highlight="container"] > .scene > [diagram-highlights~="container"]:not(.cub-8) {
-  opacity: 1 !important;
-}
-
-#system[selected] ~ #diagram[diagram-highlight="container"] > .scene > .cub-8 {
-  opacity: 0.37;
+[page="system"][content="names"] ~ #diagram [diagram-group="names"],
+[page="system"][content="users"] ~ #diagram [diagram-group="users"],
+[page="system"][content="containers"] ~ #diagram [diagram-group="containers"] {
+  opacity: 1;
 }
 
 /* Code View */
@@ -477,9 +497,11 @@ x-appbar > button {
 
 #diagram {
   position: absolute;
-  top: 9em;
+  top: 3.5em;
   left: 0;
   right: 0;
+  height: 20.5em;
+  line-height: 20.5em;
   opacity: 0;
   z-index: 0;
   text-align: center;
@@ -500,13 +522,14 @@ x-appbar > button {
 .diagram-cubes {
   display: inline-block;
   vertical-align: middle;
-  font-size: calc((100vmin - 170px) / 33);
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
   -webkit-perspective: 2000px;
   perspective: 2000px;
-  transform: rotateX(-155deg) rotateY(25deg) translateZ(-3em);
+  transform: rotateX(-160deg) rotateY(25deg) translateX(-1.7em);
+  -webkit-transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
 }
 
 /*#diagram:hover .diagram-cubes {
@@ -531,6 +554,10 @@ x-appbar > button {
   backface-visibility: hidden;
 }
 
+#diagram [diagram-group] {
+  transition: opacity 0.5s ease;
+}
+
 #diagram_blockchain x-cube {
   margin: 0.2em 0;
 }
@@ -539,15 +566,15 @@ x-appbar > button {
   margin-right: -1.75em;
 }
 
-[diagram-group="naming"] .x-cube-face {
+[diagram-group="names"] .x-cube-face {
   background: rgba(77, 0, 134, 0.15);
 }
 
-[diagram-group="user"] .x-cube-face {
+[diagram-group="users"] .x-cube-face {
   background: rgba(225, 70, 88, 0.3);
 }
 
-[diagram-group="container"] .x-cube-face {
+[diagram-group="containers"] .x-cube-face {
   background: rgba(44, 84, 138, 0.1);
 }
 
@@ -583,19 +610,17 @@ x-appbar > button {
     padding-left: 2.75em;
   }
 
-  #system section {
+  [page="system"] > section {
     top: 20em;
   }
 
-  .diagram-cubes > * {
-    font-size: 130%;
+  #diagram {
+    height: 17em;
+    line-height: 17em;
   }
 }
 
 @media all and (min-width: 641px) {
-  x-page > header svg:first-child {
-    margin: -0.3em 0.1em 0 0;
-  }
 
   #global_menu {
     -webkit-transform: none;
@@ -608,6 +633,14 @@ x-appbar > button {
     transition: none;
   }
 
+  x-page > header svg:first-child {
+    margin: -0.3em 0.1em 0 0;
+  }
+
+  /*.diagram-cubes > * {
+    font-size: 130%;
+  }*/
+
 }
 
 @media all and (min-width: 641px) and (max-width: 900px) {
@@ -617,10 +650,6 @@ x-appbar > button {
   x-page > footer,
   #diagram {
     left: 72px !important;
-  }
-
-  #system section {
-    top: 20em;
   }
 
   #global_menu {
@@ -637,6 +666,7 @@ x-appbar > button {
     display: block;
     font-size: 0.6em;
   }
+
 }
 
 @media all and (min-width: 901px) {

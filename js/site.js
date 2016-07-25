@@ -115,17 +115,23 @@
 
 })();
 
-function switchPage(view){
-  document.getElementById(view).show(true);
-  xtag.query(document, 'x-action[data-view]').forEach(function(action){
-    if (action.getAttribute('data-view') == view) action.setAttribute('selected', '');
-    else action.removeAttribute('selected');
-  });
-}
-
 (function(){
 
   var globalMenu = document.getElementById('global_menu');
+
+  var pages = {};
+  ['overview', 'system', 'code', 'community'].forEach(function(name){
+    pages[name] = document.querySelector('[page="' + name + '"]');
+  });
+
+  function switchPage(page){
+    console.log(page);
+    pages[page].show(true);
+    xtag.query(document, 'x-action[data-page]').forEach(function(action){
+      if (action.getAttribute('data-page') == page) action.setAttribute('selected', '');
+      else action.removeAttribute('selected');
+    });
+  }
 
   xtag.history.addPaths({
     '/overview': {
@@ -151,17 +157,16 @@ function switchPage(view){
   });
 
   xtag.addEvents(document, {
-    'viewchange': function(event){
+    pagechange: function(event){
       globalMenu.hide();
-      var view = event.target.getAttribute('data-view');
+      var page = event.target.getAttribute('data-page');
       xtag.history.push({
-        path: '/' + view
+        path: '/' + page
       }, true);
     }
   });
 
   var diagram = document.getElementById('diagram');
-  var systemView = document.getElementById('system');
   xtag.addEvents(diagram, {
     'tap:delegate([diagram-group])': function(){
       var group = this.getAttribute('diagram-group');
@@ -169,23 +174,59 @@ function switchPage(view){
     }
   });
 
-  function loadGithubContent(){
-    fetch()
+  function fetchGithubContent(url, success, error){
+    var cache = localStorage[url];
+    if (cache) {
+      cache = JSON.parse(cache);
+      if (new Date().getTime() - cache.expiry > 3600000) cache = false;
+    }
+    if (window.noFetchCaching || !cache) {
+      fetch(url).then(function(response){
+        return response.text();
+      }).then(function(content){
+        localStorage[url] = JSON.stringify({
+          expiry: new Date().getTime(),
+          content: content
+        });
+        success(content);
+      }).catch(function(e){
+        console.log(e);
+        if (error) error(e)
+      });
+    }
+    else {
+      success(cache.content);
+    }
   }
 
+  var namesMarkdown = document.getElementById('system_names_markdown');
+  var usersMarkdown = document.getElementById('system_users_markdown');
+  var containersMarkdown = document.getElementById('system_containers_markdown');
+
   window.addEventListener('hashchange', function(){
-    console.log(location.hash);
     switch(location.hash) {
       case '#system-names':
-      //  fetch('')
+        pages.system.setAttribute('content', 'names');
+        fetchGithubContent('https://cdn.rawgit.com/blockchain-identity/blockchain-identity.github.io/master/content/name-layer.md', function(content){
+          namesMarkdown.render(content);
+          namesMarkdown.setAttribute('loaded', '');
+        });
       break;
 
       case '#system-users':
-
+        pages.system.setAttribute('content', 'users');
+        fetchGithubContent('https://cdn.rawgit.com/blockchain-identity/blockchain-identity.github.io/master/content/name-layer.md', function(content){
+          usersMarkdown.render(content);
+          usersMarkdown.setAttribute('loaded', '');
+        });
       break;
 
       case '#system-containers':
-
+        pages.system.setAttribute('content', 'containers');
+        fetchGithubContent('https://cdn.rawgit.com/blockchain-identity/blockchain-identity.github.io/master/content/name-layer.md', function(content){
+          containersMarkdown.render(content);
+          containersMarkdown.setAttribute('loaded', '');
+        });
       break;
     }
   }, false);
