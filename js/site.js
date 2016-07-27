@@ -120,7 +120,7 @@
   var globalMenu = document.getElementById('global_menu');
 
   var pages = {};
-  ['overview', 'system', 'code', 'community'].forEach(function(name){
+  ['start', 'sales', 'loans', 'contracts'].forEach(function(name){
     pages[name] = document.querySelector('[page="' + name + '"]');
   });
 
@@ -133,102 +133,139 @@
     });
   }
 
+  function formToJSON(form){
+    var obj = {};
+    xtag.query(form, 'input[name], select[name], textarea[name], x-medium-editor[name]').forEach(function(node){
+      var name = node.name;
+      var value = node.value;
+      if (node.nodeName == 'INPUT'){
+        switch (node.type) {
+          case 'checkbox': value = node.checked; break;
+          case 'date': value = new Date(value); break;
+        }
+      }
+      if (obj[name] !== undefined){
+        obj[name].push ? obj[name].push(value) : obj[name] = [obj[name], value];
+      }
+      else obj[name] = value;
+    });
+    return obj;
+  }
+
+  function clearForm(form){
+    xtag.query(form, 'input:not([type="submit"])').forEach(function(input){
+      input.value = null;
+    });
+  }
+
+  function getData(key){
+    return JSON.parse(localStorage[key] || null);
+  }
+
+  function setData(key, data){
+    return localStorage[key] = JSON.stringify(data);
+  }
+
   xtag.history.addPaths({
-    '/overview': {
+    '/': {
       action: function(){
-        switchPage('overview');
+        switchPage('start');
       }
     },
-    '/system': {
+    '/sales': {
       action: function(){
-        switchPage('system');
+        switchPage('sales');
       }
     },
-    '/code': {
+    '/loans': {
       action: function(){
-        switchPage('code');
+        switchPage('loans');
       }
     },
-    '/community':  {
+    '/contracts':  {
       action: function(){
-        switchPage('community');
+        switchPage('contracts');
       }
     }
   });
+
+  var saleList = document.querySelector('[page="sales"] section > ul');
+  var loanList = document.querySelector('[page="loans"] section > ul');
+  var contractList = document.querySelector('[page="contracts"] section > ul');
+
+  var saleTemplate = xtag.createFragment('<li class="shadow-low" flex="row center-y"><div flex-fill>' +
+    '<h4></h4>' +
+    '<div><b>Product:</b> <span class="sale-product"></span></div><div><b>Weight:</b> <span class="sale-weight"></span></div><div><b>Price:</b> <span class="sale-price"></span></div>' +
+  '</div><div class="sale-signature"></div></li>');
+
+  var templateRenderers = {
+    sale: function(data){
+      var node = saleTemplate.cloneNode(true);
+      node.firstElementChild.id = data.id;
+      node.querySelector('h4').textContent = data.sale_product;
+      node.querySelector('.sale-product').textContent = data.sale_buyer;
+      node.querySelector('.sale-weight').textContent = data.sale_weight;
+      node.querySelector('.sale-price').textContent = data.sale_price;
+      if (data.sale_signature) node.querySelector('.sale-signature').setAttribute('signed', '');
+      node.firstElementChild.__data__ = data;
+      return node;
+    }
+  }
 
   xtag.addEvents(document, {
     pagechange: function(event){
       globalMenu.hide();
       var page = event.target.getAttribute('data-page');
+      var modal = event.target.getAttribute('data-modal');
+      if (modal) document.getElementById(modal).show();
       xtag.history.push({
         path: '/' + page
       }, true);
+    },
+    'submit:delegate(x-modal form)': function(e){
+      e.preventDefault();
+      console.log(e);
+      var form = e.target;
+      var data = formToJSON(e.target);
+      switch (form.getAttribute('form-type')) {
+        case 'sales':
+          var sales = getData('sales') || {};
+          data.id = xtag.uid();
+          console.log(data);
+          sales[data.id] = data;
+          setData('sales', sales);
+          var node = templateRenderers.sale(data);
+          saleList.appendChild(node);
+          clearForm(form);
+          new_sale.hide();
+        break;
+        case 'sale-signing':
+          var sale = sale_signing.__data__;
+          var li = document.getElementById(sale.id);
+          if (li) li.querySelector('.sale-signature').setAttribute('signed', '');
+          sale.sale_signature = {};
+          sale.sale_phone = data.sale_phone;
+          var sales = getData('sales') || {};
+          sales[sale.id] = sale;
+          setData('sales', sales)
+          clearForm(form);
+          sale_signing.hide();
+      }
+    },
+    'tap:delegate([page="sales"] section li)': function(){
+      sale_signing.__data__ = this.__data__;
+      sale_signing.show();
+
     }
   });
 
-  var diagram = document.getElementById('diagram');
-  xtag.addEvents(diagram, {
-    'tap:delegate([diagram-group])': function(){
-      var group = this.getAttribute('diagram-group');
-      diagram.setAttribute('diagram-highlight', group);
-    }
-  });
+  var sales = getData('sales');
 
-  function fetchGithubContent(url, success, error){
-    var cache = localStorage[url];
-    if (cache) {
-      cache = JSON.parse(cache);
-      if (new Date().getTime() - cache.expiry > 3600000) cache = false;
-    }
-    if (window.noFetchCaching || !cache) {
-      fetch(url).then(function(response){
-        return response.text();
-      }).then(function(content){
-        localStorage[url] = JSON.stringify({
-          expiry: new Date().getTime(),
-          content: content
-        });
-        success(content);
-      }).catch(function(e){
-        console.log(e);
-        if (error) error(e)
-      });
-    }
-    else {
-      success(cache.content);
+  if (sales) {
+    for (z in sales) {
+      var node = templateRenderers.sale(sales[z]);
+      saleList.appendChild(node);
     }
   }
-
-  var namesMarkdown = document.getElementById('system_names_markdown');
-  var usersMarkdown = document.getElementById('system_users_markdown');
-  var containersMarkdown = document.getElementById('system_containers_markdown');
-
-  window.addEventListener('hashchange', function(){
-    switch(location.hash) {
-      case '#system-names':
-        pages.system.setAttribute('content', 'names');
-        fetchGithubContent('https://cdn.rawgit.com/blockchain-identity/blockchain-identity.github.io/master/content/name-layer.md', function(content){
-          namesMarkdown.render(content);
-          namesMarkdown.setAttribute('loaded', '');
-        });
-      break;
-
-      case '#system-users':
-        pages.system.setAttribute('content', 'users');
-        fetchGithubContent('https://cdn.rawgit.com/blockchain-identity/blockchain-identity.github.io/master/content/name-layer.md', function(content){
-          usersMarkdown.render(content);
-          usersMarkdown.setAttribute('loaded', '');
-        });
-      break;
-
-      case '#system-containers':
-        pages.system.setAttribute('content', 'containers');
-        fetchGithubContent('https://cdn.rawgit.com/blockchain-identity/blockchain-identity.github.io/master/content/name-layer.md', function(content){
-          containersMarkdown.render(content);
-          containersMarkdown.setAttribute('loaded', '');
-        });
-      break;
-    }
-  }, false);
 
 })();

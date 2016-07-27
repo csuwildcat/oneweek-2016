@@ -1,5 +1,5 @@
 {
-  "name": "blockchain-identity-site",
+  "name": "oneweek-2016",
   "description": "",
   "version": "0.1.0",
   "keywords": [
@@ -10,7 +10,8 @@
     "es6-promise": "*",
     "fetch": "*",
     "x-tag-page": "*",
-    "x-tag-tabbox": "*",
+    "x-tag-modal": "*",
+    "x-tag-appbar": "*",
     "x-tag-peekbox": "*",
     "x-tag-action": "*",
     "x-tag-cube": "*",
