@@ -167,22 +167,22 @@
   }
 
   xtag.history.addPaths({
-    '/': {
-      action: function(){
-        switchPage('start');
-      }
-    },
-    '/sales': {
+    '/oneweek-2016': {
       action: function(){
         switchPage('sales');
       }
     },
-    '/loans': {
+    '/oneweek-2016/sales': {
+      action: function(){
+        switchPage('sales');
+      }
+    },
+    '/oneweek-2016/loans': {
       action: function(){
         switchPage('loans');
       }
     },
-    '/contracts':  {
+    '/oneweek-2016/contracts':  {
       action: function(){
         switchPage('contracts');
       }
