@@ -219,7 +219,7 @@
       var modal = event.target.getAttribute('data-modal');
       if (modal) document.getElementById(modal).show();
       xtag.history.push({
-        path: '/' + page
+        path: '/oneweek-2016/' + page
       }, true);
     },
     'submit:delegate(x-modal form)': function(e){
