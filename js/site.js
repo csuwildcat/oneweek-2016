@@ -224,14 +224,12 @@
     },
     'submit:delegate(x-modal form)': function(e){
       e.preventDefault();
-      console.log(e);
       var form = e.target;
       var data = formToJSON(e.target);
       switch (form.getAttribute('form-type')) {
         case 'sales':
           var sales = getData('sales') || {};
           data.id = xtag.uid();
-          console.log(data);
           sales[data.id] = data;
           setData('sales', sales);
           var node = templateRenderers.sale(data);
@@ -255,7 +253,9 @@
     'tap:delegate([page="sales"] section li)': function(){
       sale_signing.__data__ = this.__data__;
       sale_signing.show();
-
+    },
+    'tap:delegate(x-modal-overlay)': function(){
+      this.previousElementSibling.hide();
     }
   });
 
