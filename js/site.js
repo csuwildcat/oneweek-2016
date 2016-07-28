@@ -202,8 +202,8 @@
     sale: function(data){
       var node = saleTemplate.cloneNode(true);
       node.firstElementChild.id = data.id;
-      node.querySelector('h4').textContent = data.sale_product;
-      node.querySelector('.sale-product').textContent = data.sale_buyer;
+      node.querySelector('h4').textContent = data.sale_buyer;
+      node.querySelector('.sale-product').textContent = data.sale_product;
       node.querySelector('.sale-weight').textContent = data.sale_weight;
       node.querySelector('.sale-price').textContent = data.sale_price;
       if (data.sale_signature) node.querySelector('.sale-signature').setAttribute('signed', '');
